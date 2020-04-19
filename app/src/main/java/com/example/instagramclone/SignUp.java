@@ -2,6 +2,7 @@ package com.example.instagramclone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.View;
@@ -23,12 +24,13 @@ import java.util.List;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
-    Button btnSave;
-    EditText name, kickPower;
-    EditText kickSpeed;
-    TextView txtGetData;
-    Button btnGetAllData;
-    String allKickBoxers;
+    private Button btnSave;
+    private EditText name, kickPower;
+    private EditText kickSpeed;
+    private TextView txtGetData;
+    private Button btnGetAllData;
+    private String allKickBoxers;
+    private Button btnTransition;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         kickSpeed = findViewById(R.id.edtKickSpeed);
         btnSave.setOnClickListener(SignUp.this);
         txtGetData = findViewById(R.id.txtGetData);
-
+        btnTransition = findViewById(R.id.btnNextActivity);
         btnGetAllData = findViewById(R.id.btnGetAllData);
         txtGetData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +94,17 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
             }
         });
+
+        btnTransition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(SignUp.this, SignUpLoginActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
     }
 
 

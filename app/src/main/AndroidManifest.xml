@@ -17,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SignUpLoginActivity"></activity>
 
         <meta-data
             android:name="com.parse.SERVER_URL"
