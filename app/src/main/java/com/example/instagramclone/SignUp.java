@@ -2,23 +2,33 @@ package com.example.instagramclone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.shashank.sony.fancytoastlib.FancyToast;
+
+import java.util.List;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
     Button btnSave;
     EditText name, kickPower;
     EditText kickSpeed;
+    TextView txtGetData;
+    Button btnGetAllData;
+    String allKickBoxers;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,24 +40,58 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         btnSave = findViewById(R.id.btnSave);
         kickSpeed = findViewById(R.id.edtKickSpeed);
         btnSave.setOnClickListener(SignUp.this);
+        txtGetData = findViewById(R.id.txtGetData);
+
+        btnGetAllData = findViewById(R.id.btnGetAllData);
+        txtGetData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("KickBoxer");
+                parseQuery.getInBackground("Xll2263z5O", new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject object, ParseException e) {
+
+                        if(object != null && e==null){
+
+                            Toast.makeText(SignUp.this, "done", Toast.LENGTH_SHORT).show();
+                            txtGetData.setText(object.get("Name") + "- Kick Power: "+ object.get("KickPower") + "- Kick Speed: "+ object.get("KickSpeed"));
+
+                        }
+
+                    }
+                });
+
+            }
+        });
+
+
+        btnGetAllData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ParseQuery<ParseObject> queryAll =  ParseQuery.getQuery("KickBoxer");
+                queryAll.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        if(e==null){
+                            if(objects.size() > 0){
+                                allKickBoxers = "";
+                                for(ParseObject kickBoxer: objects){
+                                    allKickBoxers = allKickBoxers + kickBoxer.get("Name") +" " +kickBoxer.get("KickPower")+ " "+ kickBoxer.get("KickSpeed") +"\n";
+                                    FancyToast.makeText(SignUp.this, allKickBoxers, Toast.LENGTH_SHORT, FancyToast.SUCCESS, true ).show();
+                                }
+
+                            }
+                        }
+                    }
+                });
+
+
+            }
+        });
     }
 
-    public void helloWorldTapped(View view){
-
-//        ParseObject boxer = new ParseObject("Boxer");
-//        boxer.put("punch_speed", 200);
-//        boxer.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//
-//                if(e==null){
-//                    Toast.makeText(SignUp.this, "Saved in server success", Toast.LENGTH_SHORT).show();
-//                }
-//
-//            }
-//        });
-
-    }
 
     @Override
     public void onClick(View v) {
