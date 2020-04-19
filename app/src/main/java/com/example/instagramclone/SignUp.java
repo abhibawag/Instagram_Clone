@@ -71,12 +71,14 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
             public void onClick(View v) {
 
                 ParseQuery<ParseObject> queryAll =  ParseQuery.getQuery("KickBoxer");
+                queryAll.whereGreaterThan("punchPower", 900);
                 queryAll.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> objects, ParseException e) {
                         if(e==null){
                             if(objects.size() > 0){
                                 allKickBoxers = "";
+
                                 for(ParseObject kickBoxer: objects){
                                     allKickBoxers = allKickBoxers + kickBoxer.get("Name") +" " +kickBoxer.get("KickPower")+ " "+ kickBoxer.get("KickSpeed") +"\n";
                                     FancyToast.makeText(SignUp.this, allKickBoxers, Toast.LENGTH_SHORT, FancyToast.SUCCESS, true ).show();
